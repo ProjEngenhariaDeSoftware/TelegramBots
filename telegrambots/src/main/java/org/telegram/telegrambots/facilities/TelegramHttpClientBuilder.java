@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Created by bvn13 on 17.04.2018.
  */
 public class TelegramHttpClientBuilder {
-
+	
     public static CloseableHttpClient build(DefaultBotOptions options) {
         HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
                 .setSSLHostnameVerifier(new NoopHostnameVerifier())

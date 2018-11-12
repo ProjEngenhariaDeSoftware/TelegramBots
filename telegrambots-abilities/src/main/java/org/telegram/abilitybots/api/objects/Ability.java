@@ -123,17 +123,23 @@ public final class Ability {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+	  boolean retorno = false;
+    if (this == o) {
+      retorno = true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      retorno = false;
+    }
 
-    Ability ability = (Ability) o;
-    return argNum == ability.argNum &&
+    final Ability  ability = (Ability) o;
+    retorno =  argNum == ability.argNum &&
         Objects.equal(name, ability.name) &&
         locality == ability.locality &&
         privacy == ability.privacy;
+    
+    return retorno;
   }
+
 
   @Override
   public int hashCode() {

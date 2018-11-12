@@ -12,6 +12,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 import org.telegram.telegrambots.facilities.TelegramHttpClientBuilder;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -60,7 +61,7 @@ public abstract class DefaultAbsSender extends AbsSender {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final DefaultBotOptions options;
     private volatile CloseableHttpClient httpClient;
-    private volatile RequestConfig requestConfig;
+    private static volatile RequestConfig requestConfig;
 
     protected DefaultAbsSender(DefaultBotOptions options) {
         super();
@@ -81,17 +82,18 @@ public abstract class DefaultAbsSender extends AbsSender {
     }
 
     private void configureHttpContext() {
+    	HttpContext httpContext = options.getHttpContext();;
 
         if (options.getProxyType() != DefaultBotOptions.ProxyType.NO_PROXY) {
-            InetSocketAddress socksaddr = new InetSocketAddress(options.getProxyHost(), options.getProxyPort());
-            options.getHttpContext().setAttribute("socketAddress", socksaddr);
+            final InetSocketAddress socksaddr = new InetSocketAddress(options.getProxyHost(), options.getProxyPort());
+            httpContext.setAttribute("socketAddress", socksaddr);
         }
 
         if (options.getProxyType() == DefaultBotOptions.ProxyType.SOCKS4) {
-            options.getHttpContext().setAttribute("socksVersion", 4);
+        	httpContext.setAttribute("socksVersion", 4);
         }
         if (options.getProxyType() == DefaultBotOptions.ProxyType.SOCKS5) {
-            options.getHttpContext().setAttribute("socksVersion", 5);
+        	httpContext.setAttribute("socksVersion", 5);
         }
 
     }
@@ -109,7 +111,8 @@ public abstract class DefaultAbsSender extends AbsSender {
     // Send Requests
 
     public final java.io.File downloadFile(String filePath) throws TelegramApiException {
-        if(filePath == null || filePath.isEmpty()){
+    	
+    	if(filePath == null || filePath.isEmpty()){
             throw new TelegramApiException("Parameter file can not be null");
         }
         String url = File.getFileUrl(getBotToken(), filePath);
@@ -129,16 +132,16 @@ public abstract class DefaultAbsSender extends AbsSender {
             throw new TelegramApiException("Parameter filePath can not be null");
         }
         assertParamNotNull(callback, "callback");
-        String url = File.getFileUrl(getBotToken(), filePath);
-        String tempFileName = Long.toString(System.currentTimeMillis());
+        final String url = File.getFileUrl(getBotToken(), filePath);
+        final String tempFileName = Long.toString(System.currentTimeMillis());
         exe.submit(getDownloadFileAsyncJob(filePath, callback, url, tempFileName));
     }
 
     public final void downloadFileAsync(File file, DownloadFileCallback<File> callback) throws TelegramApiException {
         assertParamNotNull(file, "file");
         assertParamNotNull(callback, "callback");
-        String url = file.getFileUrl(getBotToken());
-        String tempFileName = file.getFileId();
+        final String url = file.getFileUrl(getBotToken());
+        final String tempFileName = file.getFileId();
         exe.submit(getDownloadFileAsyncJob(file, callback, url, tempFileName));
     }
 

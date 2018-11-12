@@ -170,21 +170,22 @@ public class DefaultSender_ESTest extends DefaultSender_ESTest_scaffolding {
       User user0 = defaultSender0.getMe();
       assertNull(user0);
   }
-
+ 
   @Test(timeout = 4000)
   public void test14()  throws Throwable  {
       DefaultAbsSender defaultAbsSender0 = mock(DefaultAbsSender.class, new ViolatedAssumptionAnswer());
-      doReturn((Serializable) null).when(defaultAbsSender0).execute(nullable(java.lang.Object.class));
+      doReturn((Serializable) null).when(defaultAbsSender0).execute((SendDocument) nullable(java.lang.Object.class));
       DefaultSender defaultSender0 = new DefaultSender(defaultAbsSender0);
       BotApiMethod<String> botApiMethod0 = (BotApiMethod<String>) mock(BotApiMethod.class, new ViolatedAssumptionAnswer());
       String string0 = defaultSender0.execute(botApiMethod0);
       assertNull(string0);
   }
 
+  
   @Test(timeout = 4000)
   public void test15()  throws Throwable  {
       DefaultAbsSender defaultAbsSender0 = mock(DefaultAbsSender.class, new ViolatedAssumptionAnswer());
-      doReturn("org.telegram.abilitybots.api.sender.DefaultSender").when(defaultAbsSender0).execute(nullable(java.lang.Object.class));
+      doReturn("org.telegram.abilitybots.api.sender.DefaultSender").when(defaultAbsSender0).execute((SendDocument) nullable(java.lang.Object.class));
       DefaultSender defaultSender0 = new DefaultSender(defaultAbsSender0);
       BotApiMethod<String> botApiMethod0 = (BotApiMethod<String>) mock(BotApiMethod.class, new ViolatedAssumptionAnswer());
       String string0 = defaultSender0.execute(botApiMethod0);

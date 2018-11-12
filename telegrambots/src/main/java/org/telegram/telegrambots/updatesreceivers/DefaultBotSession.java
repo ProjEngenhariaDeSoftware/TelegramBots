@@ -53,9 +53,7 @@ public class DefaultBotSession implements BotSession {
     private DefaultBotOptions options;
     private UpdatesSupplier updatesSupplier;
 
-    @Inject
-    public DefaultBotSession() {
-    }
+
 
     @Override
     public synchronized void start() {

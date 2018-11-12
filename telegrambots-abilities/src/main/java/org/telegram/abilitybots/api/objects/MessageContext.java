@@ -39,7 +39,8 @@ public class MessageContext {
   }
 
   /**
-   * @return the originating chatId, maps correctly to both group and user-private chats
+   * @return the originating chatId, maps correctly to both 
+   * group and user-private chats
    */
   public Long chatId() {
     return chatId;
@@ -89,8 +90,9 @@ public class MessageContext {
   }
 
   private void checkLength() {
-    if (arguments.length == 0)
+    if (arguments.length == 0) {
       throw new IllegalStateException("This message has no arguments");
+    }
   }
 
   @Override
@@ -105,16 +107,21 @@ public class MessageContext {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+	boolean retorno;
+    if (this == o) {
+      retorno = true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      retorno = false;
+    }
 
     MessageContext that = (MessageContext) o;
-    return Objects.equal(user, that.user) &&
+    retorno =  Objects.equal(user, that.user) &&
         Objects.equal(chatId, that.chatId) &&
         Arrays.equals(arguments, that.arguments) &&
         Objects.equal(update, that.update);
+    
+    return retorno;
   }
 
   @Override

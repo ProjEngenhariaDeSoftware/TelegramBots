@@ -22,7 +22,7 @@ public final class Reply {
   public final List<Predicate<Update>> conditions;
   public final Consumer<Update> action;
 
-  private Reply(List<Predicate<Update>> conditions, Consumer<Update> action) {
+  public Reply(List<Predicate<Update>> conditions, Consumer<Update> action) {
     this.conditions = conditions;
     this.action = action;
   }
