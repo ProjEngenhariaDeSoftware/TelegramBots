@@ -472,39 +472,17 @@ public class Message implements BotApiObject {
     @Override
     public String toString() {
         return "Message{" +
-                "messageId=" + messageId +
-                ", from=" + from +
-                ", date=" + date +
-                ", chat=" + chat +
-                ", forwardFrom=" + forwardFrom +
-                ", forwardFromChat=" + forwardFromChat +
-                ", forwardDate=" + forwardDate +
-                ", text='" + text + '\'' +
-                ", entities=" + entities +
-                ", captionEntities=" + captionEntities +
-                ", audio=" + audio +
-                ", document=" + document +
-                ", photo=" + photo +
-                ", sticker=" + sticker +
-                ", video=" + video +
-                ", contact=" + contact +
-                ", location=" + location +
-                ", venue=" + venue +
+                toStringMessageBasicData() +
+                toStringMessageMedia() +
+                toStringMessageAdress() +
                 ", pinnedMessage=" + pinnedMessage +
-                ", newChatMembers=" + newChatMembers +
-                ", leftChatMember=" + leftChatMember +
-                ", newChatTitle='" + newChatTitle + '\'' +
-                ", newChatPhoto=" + newChatPhoto +
-                ", deleteChatPhoto=" + deleteChatPhoto +
-                ", groupchatCreated=" + groupchatCreated +
+                toStringMessageChatData() +
                 ", replyToMessage=" + replyToMessage +
                 ", voice=" + voice +
                 ", caption='" + caption + '\'' +
                 ", superGroupCreated=" + superGroupCreated +
                 ", channelChatCreated=" + channelChatCreated +
-                ", migrateToChatId=" + migrateToChatId +
-                ", migrateFromChatId=" + migrateFromChatId +
-                ", editDate=" + editDate +
+                toStringMessageMigrateChat() +
                 ", game=" + game +
                 ", forwardFromMessageId=" + forwardFromMessageId +
                 ", invoice=" + invoice +
@@ -516,5 +494,47 @@ public class Message implements BotApiObject {
                 ", connectedWebsite='" + connectedWebsite + '\'' +
                 ", passportData=" + passportData +
                 '}';
+    }
+    
+    private String toStringMessageBasicData() {
+    	return "messageId=" + messageId +
+                ", from=" + from +
+                ", date=" + date +
+                ", chat=" + chat +
+                ", forwardFrom=" + forwardFrom +
+                ", forwardFromChat=" + forwardFromChat +
+                ", forwardDate=" + forwardDate +
+                ", text='" + text + '\'' +
+                ", entities=" + entities +
+                ", captionEntities=" + captionEntities;
+    }
+    
+    private String toStringMessageAdress() {
+    	return ", contact=" + contact +
+                ", location=" + location +
+                ", venue=" + venue;
+    }
+    
+    private String toStringMessageMedia() {
+    	return ", audio=" + audio +
+                ", document=" + document +
+                ", photo=" + photo +
+                ", sticker=" + sticker +
+                ", video=" + video;
+    }
+    
+    private String toStringMessageMigrateChat() {
+    	return ", migrateToChatId=" + migrateToChatId +
+                ", migrateFromChatId=" + migrateFromChatId +
+                ", editDate=" + editDate;
+    }
+    
+    private String toStringMessageChatData() {
+    	return ", newChatMembers=" + newChatMembers +
+                ", leftChatMember=" + leftChatMember +
+                ", newChatTitle='" + newChatTitle + '\'' +
+                ", newChatPhoto=" + newChatPhoto +
+                ", deleteChatPhoto=" + deleteChatPhoto +
+                ", groupchatCreated=" + groupchatCreated;
     }
 }

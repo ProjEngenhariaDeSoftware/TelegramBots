@@ -160,26 +160,11 @@ public abstract class DefaultAbsSender extends AbsSender {
 
             addInputFile(builder, sendDocument.getDocument(), SendDocument.DOCUMENT_FIELD, true);
 
-            if (sendDocument.getReplyMarkup() != null) {
-                builder.addTextBody(SendDocument.REPLYMARKUP_FIELD, objectMapper.writeValueAsString(sendDocument.getReplyMarkup()), TEXT_PLAIN_CONTENT_TYPE);
-            }
-            if (sendDocument.getReplyToMessageId() != null) {
-                builder.addTextBody(SendDocument.REPLYTOMESSAGEID_FIELD, sendDocument.getReplyToMessageId().toString(), TEXT_PLAIN_CONTENT_TYPE);
-            }
-            if (sendDocument.getCaption() != null) {
-                builder.addTextBody(SendDocument.CAPTION_FIELD, sendDocument.getCaption(), TEXT_PLAIN_CONTENT_TYPE);
-                if (sendDocument.getParseMode() != null) {
-                    builder.addTextBody(SendDocument.PARSEMODE_FIELD, sendDocument.getParseMode(), TEXT_PLAIN_CONTENT_TYPE);
-                }
-            }
-            if (sendDocument.getDisableNotification() != null) {
-                builder.addTextBody(SendDocument.DISABLENOTIFICATION_FIELD, sendDocument.getDisableNotification().toString(), TEXT_PLAIN_CONTENT_TYPE);
-            }
-
-            if (sendDocument.getThumb() != null) {
-                addInputFile(builder, sendDocument.getThumb(), SendDocument.THUMB_FIELD, false);
-                builder.addTextBody(SendDocument.THUMB_FIELD, sendDocument.getThumb().getAttachName(), TEXT_PLAIN_CONTENT_TYPE);
-            }
+            sendDocumentReplyMarkup(builder, sendDocument);
+            sendDocumentReplyToMessage(builder, sendDocument);
+            sendDocumentCaption(builder, sendDocument);
+            sendDocumentDesableNotification(builder, sendDocument);
+            sendDocumentGetThumb(builder, sendDocument);
 
             HttpEntity multipart = builder.build();
             httppost.setEntity(multipart);
@@ -187,6 +172,40 @@ public abstract class DefaultAbsSender extends AbsSender {
             return sendDocument.deserializeResponse(sendHttpPostRequest(httppost));
         } catch (IOException e) {
             throw new TelegramApiException("Unable to send document", e);
+        }
+    }
+    
+    private void sendDocumentReplyMarkup (MultipartEntityBuilder builder, SendDocument sendDocument) throws JsonProcessingException {
+    	if (sendDocument.getReplyMarkup() != null) {
+            builder.addTextBody(SendDocument.REPLYMARKUP_FIELD, objectMapper.writeValueAsString(sendDocument.getReplyMarkup()), TEXT_PLAIN_CONTENT_TYPE);
+        }
+    }
+    
+    private void sendDocumentReplyToMessage (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    	if (sendDocument.getReplyToMessageId() != null) {
+            builder.addTextBody(SendDocument.REPLYTOMESSAGEID_FIELD, sendDocument.getReplyToMessageId().toString(), TEXT_PLAIN_CONTENT_TYPE);
+        }
+    }
+    
+    private void sendDocumentCaption (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    	if (sendDocument.getCaption() != null) {
+            builder.addTextBody(SendDocument.CAPTION_FIELD, sendDocument.getCaption(), TEXT_PLAIN_CONTENT_TYPE);
+            if (sendDocument.getParseMode() != null) {
+                builder.addTextBody(SendDocument.PARSEMODE_FIELD, sendDocument.getParseMode(), TEXT_PLAIN_CONTENT_TYPE);
+            }
+        }
+    }
+    
+    private void sendDocumentDesableNotification (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    	if (sendDocument.getDisableNotification() != null) {
+            builder.addTextBody(SendDocument.DISABLENOTIFICATION_FIELD, sendDocument.getDisableNotification().toString(), TEXT_PLAIN_CONTENT_TYPE);
+        }
+    }
+    
+    private void sendDocumentGetThumb (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    	if (sendDocument.getThumb() != null) {
+            addInputFile(builder, sendDocument.getThumb(), SendDocument.THUMB_FIELD, false);
+            builder.addTextBody(SendDocument.THUMB_FIELD, sendDocument.getThumb().getAttachName(), TEXT_PLAIN_CONTENT_TYPE);
         }
     }
 

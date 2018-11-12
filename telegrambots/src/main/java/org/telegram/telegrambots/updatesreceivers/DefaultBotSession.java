@@ -178,6 +178,7 @@ public class DefaultBotSession implements BotSession {
         @Override
         public void run() {
             setPriority(Thread.MIN_PRIORITY);
+            boolean checkRunning = true;
             while (running) {
                 synchronized (lock) {
                     if (running) {
@@ -199,11 +200,7 @@ public class DefaultBotSession implements BotSession {
                                 }
                             }
                         } catch (InterruptedException e) {
-                            if (!running) {
-                                receivedUpdates.clear();
-                            }
-                            BotLogger.debug(LOGTAG, e);
-                            interrupt();
+                        	catchInterruptedException(e, checkRunning);
                         } catch (Exception global) {
                             BotLogger.severe(LOGTAG, global);
                             try {
@@ -211,17 +208,21 @@ public class DefaultBotSession implements BotSession {
                                     lock.wait(exponentialBackOff.nextBackOffMillis());
                                 }
                             } catch (InterruptedException e) {
-                                if (!running) {
-                                    receivedUpdates.clear();
-                                }
-                                BotLogger.debug(LOGTAG, e);
-                                interrupt();
+                                catchInterruptedException(e, checkRunning);
                             }
                         }
                     }
                 }
             }
             BotLogger.debug(LOGTAG, "Reader thread has being closed");
+        }
+        
+        private void catchInterruptedException(InterruptedException e, Boolean checkRunning) {
+        	if (checkRunning && !running) {
+                receivedUpdates.clear();
+            }
+            BotLogger.debug(LOGTAG, e);
+            interrupt();
         }
 
         private List<Update> getUpdatesFromServer() throws IOException {
@@ -304,7 +305,7 @@ public class DefaultBotSession implements BotSession {
                     }
                     callback.onUpdatesReceived(updates);
                 } catch (InterruptedException e) {
-                    BotLogger.debug(LOGTAG, e);
+                	BotLogger.debug(LOGTAG, e);
                     interrupt();
                 } catch (Exception e) {
                     BotLogger.severe(LOGTAG, e);

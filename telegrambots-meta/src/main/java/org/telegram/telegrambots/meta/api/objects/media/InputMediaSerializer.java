@@ -27,58 +27,78 @@ public class InputMediaSerializer extends JsonSerializer<InputMedia> {
         }
 
         if (value instanceof InputMediaAudio) {
-            InputMediaAudio audio = (InputMediaAudio) value;
-            if (audio.getThumb() != null) {
-                gen.writeStringField(InputMediaAudio.THUMB_FIELD, audio.getThumb().getAttachName());
-            }
-            if (audio.getDuration() != null) {
-                gen.writeNumberField(InputMediaAudio.DURATION_FIELD, audio.getDuration());
-            }
-            if (audio.getPerformer() != null) {
-                gen.writeStringField(InputMediaAudio.PERFORMER_FIELD, audio.getPerformer());
-            }
-            if (audio.getTitle() != null) {
-                gen.writeStringField(InputMediaAudio.TITLE_FIELD, audio.getTitle());
-            }
+            gen = valueInputMediaAudio(value, gen);
         } else if (value instanceof InputMediaAnimation) {
-            InputMediaAnimation animation = (InputMediaAnimation) value;
-            if (animation.getThumb() != null) {
-                gen.writeStringField(InputMediaAnimation.THUMB_FIELD, animation.getThumb().getAttachName());
-            }
-            if (animation.getDuration() != null) {
-                gen.writeNumberField(InputMediaAnimation.DURATION_FIELD, animation.getDuration());
-            }
-            if (animation.getHeight() != null) {
-                gen.writeNumberField(InputMediaAnimation.HEIGHT_FIELD, animation.getHeight());
-            }
-            if (animation.getWidth() != null) {
-                gen.writeNumberField(InputMediaAnimation.WIDTH_FIELD, animation.getWidth());
-            }
+            gen = valueInputMediaAnimation(value, gen);
         } else if (value instanceof InputMediaDocument) {
-            InputMediaDocument document = (InputMediaDocument) value;
-            if (document.getThumb() != null) {
-                gen.writeStringField(InputMediaDocument.THUMB_FIELD, document.getThumb().getAttachName());
-            }
+            gen = valueInputMediaDocument(value, gen);
         } else if (value instanceof InputMediaVideo) {
-            InputMediaVideo video = (InputMediaVideo) value;
-            if (video.getThumb() != null) {
-                gen.writeStringField(InputMediaVideo.THUMB_FIELD, video.getThumb().getAttachName());
-            }
-            if (video.getDuration() != null) {
-                gen.writeNumberField(InputMediaVideo.DURATION_FIELD, video.getDuration());
-            }
-            if (video.getHeight() != null) {
-                gen.writeNumberField(InputMediaVideo.HEIGHT_FIELD, video.getHeight());
-            }
-            if (video.getWidth() != null) {
-                gen.writeNumberField(InputMediaVideo.WIDTH_FIELD, video.getWidth());
-            }
-            if (video.getSupportsStreaming() != null) {
-                gen.writeBooleanField(InputMediaVideo.SUPPORTSSTREAMING_FIELD, video.getSupportsStreaming());
-            }
+            gen = valueInputMediaVideo(value, gen);
         }
 
         gen.writeEndObject();
+    }
+    
+    private JsonGenerator valueInputMediaAudio(InputMedia value, JsonGenerator gen) throws IOException {
+    	InputMediaAudio audio = (InputMediaAudio) value;
+        if (audio.getThumb() != null) {
+            gen.writeStringField(InputMediaAudio.THUMB_FIELD, audio.getThumb().getAttachName());
+        }
+        if (audio.getDuration() != null) {
+            gen.writeNumberField(InputMediaAudio.DURATION_FIELD, audio.getDuration());
+        }
+        if (audio.getPerformer() != null) {
+            gen.writeStringField(InputMediaAudio.PERFORMER_FIELD, audio.getPerformer());
+        }
+        if (audio.getTitle() != null) {
+            gen.writeStringField(InputMediaAudio.TITLE_FIELD, audio.getTitle());
+        }
+    	return gen;
+    }
+    
+    private JsonGenerator valueInputMediaAnimation(InputMedia value, JsonGenerator gen) throws IOException {
+    	InputMediaAnimation animation = (InputMediaAnimation) value;
+        if (animation.getThumb() != null) {
+            gen.writeStringField(InputMediaAnimation.THUMB_FIELD, animation.getThumb().getAttachName());
+        }
+        if (animation.getDuration() != null) {
+            gen.writeNumberField(InputMediaAnimation.DURATION_FIELD, animation.getDuration());
+        }
+        if (animation.getHeight() != null) {
+            gen.writeNumberField(InputMediaAnimation.HEIGHT_FIELD, animation.getHeight());
+        }
+        if (animation.getWidth() != null) {
+            gen.writeNumberField(InputMediaAnimation.WIDTH_FIELD, animation.getWidth());
+        }
+    	return gen;
+    }
+    
+    private JsonGenerator valueInputMediaDocument(InputMedia value, JsonGenerator gen) throws IOException {
+    	InputMediaDocument document = (InputMediaDocument) value;
+        if (document.getThumb() != null) {
+            gen.writeStringField(InputMediaDocument.THUMB_FIELD, document.getThumb().getAttachName());
+        }
+    	return gen;
+    }
+    
+    private JsonGenerator valueInputMediaVideo(InputMedia value, JsonGenerator gen) throws IOException {
+    	InputMediaVideo video = (InputMediaVideo) value;
+        if (video.getThumb() != null) {
+            gen.writeStringField(InputMediaVideo.THUMB_FIELD, video.getThumb().getAttachName());
+        }
+        if (video.getDuration() != null) {
+            gen.writeNumberField(InputMediaVideo.DURATION_FIELD, video.getDuration());
+        }
+        if (video.getHeight() != null) {
+            gen.writeNumberField(InputMediaVideo.HEIGHT_FIELD, video.getHeight());
+        }
+        if (video.getWidth() != null) {
+            gen.writeNumberField(InputMediaVideo.WIDTH_FIELD, video.getWidth());
+        }
+        if (video.getSupportsStreaming() != null) {
+            gen.writeBooleanField(InputMediaVideo.SUPPORTSSTREAMING_FIELD, video.getSupportsStreaming());
+        }
+    	return gen;
     }
 
     @Override
