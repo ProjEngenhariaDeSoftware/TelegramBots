@@ -160,11 +160,11 @@ public abstract class DefaultAbsSender extends AbsSender {
 
             addInputFile(builder, sendDocument.getDocument(), SendDocument.DOCUMENT_FIELD, true);
 
-            sendDocumentReplyMarkup(builder, sendDocument);
-            sendDocumentReplyToMessage(builder, sendDocument);
-            sendDocumentCaption(builder, sendDocument);
-            sendDocumentDesableNotification(builder, sendDocument);
-            sendDocumentGetThumb(builder, sendDocument);
+            builder = sendDocumentReplyMarkup(builder, sendDocument);
+            builder = sendDocumentReplyToMessage(builder, sendDocument);
+            builder = sendDocumentCaption(builder, sendDocument);
+            builder = sendDocumentDesableNotification(builder, sendDocument);
+            builder = sendDocumentGetThumb(builder, sendDocument);
 
             HttpEntity multipart = builder.build();
             httppost.setEntity(multipart);
@@ -175,38 +175,43 @@ public abstract class DefaultAbsSender extends AbsSender {
         }
     }
     
-    private void sendDocumentReplyMarkup (MultipartEntityBuilder builder, SendDocument sendDocument) throws JsonProcessingException {
+    private MultipartEntityBuilder sendDocumentReplyMarkup (MultipartEntityBuilder builder, SendDocument sendDocument) throws JsonProcessingException {
     	if (sendDocument.getReplyMarkup() != null) {
             builder.addTextBody(SendDocument.REPLYMARKUP_FIELD, objectMapper.writeValueAsString(sendDocument.getReplyMarkup()), TEXT_PLAIN_CONTENT_TYPE);
         }
+    	return builder;
     }
     
-    private void sendDocumentReplyToMessage (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    private MultipartEntityBuilder sendDocumentReplyToMessage (MultipartEntityBuilder builder, SendDocument sendDocument) {
     	if (sendDocument.getReplyToMessageId() != null) {
             builder.addTextBody(SendDocument.REPLYTOMESSAGEID_FIELD, sendDocument.getReplyToMessageId().toString(), TEXT_PLAIN_CONTENT_TYPE);
         }
+    	return builder;
     }
     
-    private void sendDocumentCaption (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    private MultipartEntityBuilder sendDocumentCaption (MultipartEntityBuilder builder, SendDocument sendDocument) {
     	if (sendDocument.getCaption() != null) {
             builder.addTextBody(SendDocument.CAPTION_FIELD, sendDocument.getCaption(), TEXT_PLAIN_CONTENT_TYPE);
             if (sendDocument.getParseMode() != null) {
                 builder.addTextBody(SendDocument.PARSEMODE_FIELD, sendDocument.getParseMode(), TEXT_PLAIN_CONTENT_TYPE);
             }
         }
+    	return builder;
     }
     
-    private void sendDocumentDesableNotification (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    private MultipartEntityBuilder sendDocumentDesableNotification (MultipartEntityBuilder builder, SendDocument sendDocument) {
     	if (sendDocument.getDisableNotification() != null) {
             builder.addTextBody(SendDocument.DISABLENOTIFICATION_FIELD, sendDocument.getDisableNotification().toString(), TEXT_PLAIN_CONTENT_TYPE);
         }
+    	return builder;
     }
     
-    private void sendDocumentGetThumb (MultipartEntityBuilder builder, SendDocument sendDocument) {
+    private MultipartEntityBuilder sendDocumentGetThumb (MultipartEntityBuilder builder, SendDocument sendDocument) {
     	if (sendDocument.getThumb() != null) {
             addInputFile(builder, sendDocument.getThumb(), SendDocument.THUMB_FIELD, false);
             builder.addTextBody(SendDocument.THUMB_FIELD, sendDocument.getThumb().getAttachName(), TEXT_PLAIN_CONTENT_TYPE);
         }
+    	return builder;
     }
 
     @Override
