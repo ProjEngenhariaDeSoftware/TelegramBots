@@ -7,5 +7,10 @@ package org.telegram.telegrambots;
  * @date 20 of June of 2015
  */
 public class Constants {
+	
+	public Constants() {
+		
+	}
+	
     public static final int SOCKET_TIMEOUT = 75 * 1000;
 }

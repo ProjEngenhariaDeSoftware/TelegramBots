@@ -1,5 +1,6 @@
 package org.telegram.telegrambots.bots;
 
+import org.apache.http.protocol.HttpContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
@@ -81,17 +82,21 @@ public abstract class DefaultAbsSender extends AbsSender {
     }
 
     private void configureHttpContext() {
+    	
+    	HttpContext httpContext = options.getHttpContext();;
+
 
         if (options.getProxyType() != DefaultBotOptions.ProxyType.NO_PROXY) {
-            InetSocketAddress socksaddr = new InetSocketAddress(options.getProxyHost(), options.getProxyPort());
-            options.getHttpContext().setAttribute("socketAddress", socksaddr);
+           
+            final InetSocketAddress socksaddr = new InetSocketAddress(options.getProxyHost(), options.getProxyPort());
+            httpContext.setAttribute("socketAddress", socksaddr);
         }
 
         if (options.getProxyType() == DefaultBotOptions.ProxyType.SOCKS4) {
-            options.getHttpContext().setAttribute("socksVersion", 4);
+        	httpContext.setAttribute("socksVersion", 4);
         }
         if (options.getProxyType() == DefaultBotOptions.ProxyType.SOCKS5) {
-            options.getHttpContext().setAttribute("socksVersion", 5);
+        	httpContext.setAttribute("socksVersion", 5);
         }
 
     }
@@ -112,8 +117,8 @@ public abstract class DefaultAbsSender extends AbsSender {
         if(filePath == null || filePath.isEmpty()){
             throw new TelegramApiException("Parameter file can not be null");
         }
-        String url = File.getFileUrl(getBotToken(), filePath);
-        String tempFileName = Long.toString(System.currentTimeMillis());
+        final String url = File.getFileUrl(getBotToken(), filePath);
+        final String tempFileName = Long.toString(System.currentTimeMillis());
         return downloadToTemporaryFileWrappingExceptions(url, tempFileName);
     }
 
@@ -137,8 +142,8 @@ public abstract class DefaultAbsSender extends AbsSender {
     public final void downloadFileAsync(File file, DownloadFileCallback<File> callback) throws TelegramApiException {
         assertParamNotNull(file, "file");
         assertParamNotNull(callback, "callback");
-        String url = file.getFileUrl(getBotToken());
-        String tempFileName = file.getFileId();
+        final String url = file.getFileUrl(getBotToken());
+        final String tempFileName = file.getFileId();
         exe.submit(getDownloadFileAsyncJob(file, callback, url, tempFileName));
     }
 

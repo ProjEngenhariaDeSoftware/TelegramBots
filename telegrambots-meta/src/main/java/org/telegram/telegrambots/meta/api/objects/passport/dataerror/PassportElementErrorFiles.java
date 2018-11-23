@@ -87,15 +87,28 @@ public class PassportElementErrorFiles implements PassportElementError {
 
     @Override
     public void validate() throws TelegramApiValidationException {
+    	validateFile();
+    	validateMessage();
+    	validateType();
+    }
+    
+    public void validateFile() throws TelegramApiValidationException {
         if (fileHashes == null || fileHashes.isEmpty()) {
             throw new TelegramApiValidationException("File hash parameter can't be empty", this);
         }
+    }
+    
+    public void validateMessage() throws TelegramApiValidationException {
         if (message == null || message.isEmpty()) {
             throw new TelegramApiValidationException("Message parameter can't be empty", this);
         }
+    }
+    
+    public void validateType() throws TelegramApiValidationException {
         if (type == null || type.isEmpty()) {
             throw new TelegramApiValidationException("Type parameter can't be empty", this);
         }
+        
     }
 
     @Override

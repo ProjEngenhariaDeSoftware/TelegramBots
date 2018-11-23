@@ -22,7 +22,7 @@ public abstract class TelegramWebhookBot extends DefaultAbsSender implements Web
   }
 
   @Override
-  public void setWebhook(String url, String publicCertificatePath) throws TelegramApiRequestException {
-    WebhookUtils.setWebhook(this, url, publicCertificatePath);
-  }
+  public void setWebhook(String url, String publicPath) throws TelegramApiRequestException {
+	    WebhookUtils.setWebhook(this, url, publicPath);
+	  }
 }
